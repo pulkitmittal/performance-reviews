@@ -1,8 +1,8 @@
-import { LoginResponse } from '@models/login.model';
-import { User } from '@models/user.model';
-import { Request, Response } from 'express';
+import { Employee } from '../../shared/models/employee.model';
+import { User } from '../../shared/models/user.model';
+import { Omit } from '../../shared/utils';
 
-import Utils from '../../shared/utils';
+interface Results<T> { rows: Array<T>; }
 
 const Pool = require('pg').Pool;
 const pool = new Pool({
@@ -13,56 +13,70 @@ const pool = new Pool({
   port: 5432,
 });
 
-interface Results<T> { rows: Array<T>; }
-
-const getUsers = (request: Request, response: Response) => {
-  pool.query('SELECT * FROM users ORDER BY id ASC', (error: any, results: Results<User>) => {
-    if (error) {
-      throw error;
-    }
-    response.status(200).json(results.rows);
-  });
+const checkUserCredentials = (username: string, password: string): Promise<User> => {
+  return pool.query('SELECT * FROM users WHERE username = $1 AND password = $2', [username, password])
+    .then((results: Results<User>) => {
+      return results.rows[0];
+    });
 };
 
-const checkUserCredentials = (request: Request, response: Response) => {
-  console.log(`Request Body: ${request.body}`);
-  let res: LoginResponse;
-  const body = request.body || {};
-  const username = body.username;
-  const password = body.password;
+const getEmployees = (): Promise<Employee[]> => {
+  return pool.query('SELECT * FROM employees')
+    .then((results: Results<Employee>) => {
+      return results.rows;
+    });
+};
 
-  console.log(`Username: ${username}, Password exists: ${!!password}`);
+const getEmployee = (id: number): Promise<Employee> => {
+  return pool.query('SELECT * FROM employees WHERE id = $1', [id])
+    .then((results: Results<Employee>) => {
+      return results.rows[0];
+    });
+};
 
-  if (!username || !password) {
-    res = {
-      login: false,
-      message: 'Please enter both username and password!'
-    };
-    response.status(400).json(res);
-    return;
-  }
+const addEmployee = (emp: Omit<Employee, 'id'>): Promise<number> => {
+  const { name, post, department, location } = emp;
+  const query = {
+    text: 'INSERT INTO employees (name, post, department, location) VALUES ($1, $2, $3, $4) RETURNING id',
+    values: [name, post, department, location]
+  };
 
-  pool.query('SELECT * FROM users WHERE username = $1 AND password = $2', [username, password],
-    (error: any, results: Results<User>) => {
-      if (error) {
-        throw error;
-      }
-      if (results.rows[0]) {
-        res = {
-          login: true,
-          user: Utils.pluck(results.rows[0], 'id', 'username', 'role')
-        };
-        response.status(200).json(res);
-      } else {
-        res = {
-          login: false
-        };
-        response.status(403).json(res);
-      }
+  return pool.query(query)
+    .then((results: Results<Employee>) => {
+      return results.rows[0].id;
+    });
+};
+
+const updateEmployee = (emp: Employee): Promise<number> => {
+  const { id, name, post, department, location } = emp;
+  const query = {
+    text: `UPDATE employees
+      SET
+      name = $1,
+      post = $2,
+      department = $3,
+      location = $4
+      WHERE
+      id = $5
+      `,
+    values: [name, post, department, location, id]
+  };
+
+  return pool.query(query);
+};
+
+const deleteEmployee = (id: number): Promise<number> => {
+  return pool.query('DELETE FROM employees WHERE id = $1', [id])
+    .then((result: any) => {
+      return result.rowCount;
     });
 };
 
 export default {
-  getUsers,
-  checkUserCredentials
+  checkUserCredentials,
+  getEmployee,
+  getEmployees,
+  addEmployee,
+  updateEmployee,
+  deleteEmployee
 };

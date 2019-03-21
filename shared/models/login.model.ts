@@ -5,4 +5,5 @@ export interface LoginResponse {
   login: boolean;
   user?: Omit<User, 'password'>;
   message?: string;
+  token?: string;
 }

@@ -36,6 +36,8 @@ https://github.com/TypeStrong/ts-node
 Using express
 https://expressjs.com/
 
+***
+
 ## Run on local
 
 If yarn is not installed, follow the steps here: https://yarnpkg.com/lang/en/docs/install/<br>
@@ -62,4 +64,8 @@ API server will start on http://localhost:3000/
 * Create user individual review view
 
 ### Backend
+* Use a better authentication mechanism - use passport or similar for saving auth token in database instead of application state
 * Encrypt passwords
+
+## General
+* Set up for production
