@@ -1,9 +1,9 @@
+import { Users } from '../models';
 import { Omit } from '../utils';
-import { User } from './user.model';
 
 export interface LoginResponse {
   login: boolean;
-  user?: Omit<User, 'password'>;
+  user?: Omit<Users, 'password'>;
   message?: string;
   token?: string;
 }

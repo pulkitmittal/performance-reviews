@@ -1,9 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
+import { LoginResponse, User } from 'index';
 import uniqid from 'uniqid';
 
 import Errors from '../../shared/errors';
-import { LoginResponse } from '../../shared/models/login.model';
-import { User, UserRole } from '../../shared/models/user.model';
 import Utils from '../../shared/utils';
 import queries from './queries';
 
@@ -15,7 +14,7 @@ userTokens.set(
     id: 1,
     username: 'smith',
     password: 'passw0rd',
-    role: UserRole.ADMIN
+    role: 'admin'
   }
 );
 
@@ -48,16 +47,14 @@ const ifAuthenticated = (request: Request, response: Response, next: NextFunctio
 
 const isAdmin = (request: Request): boolean => {
   const user = getAuthUser(request);
-  return user && user.role === UserRole.ADMIN;
+  return user && user.role === 'admin';
 };
 
 const ifAdmin = (request: Request, response: Response, next: NextFunction) => {
   if (!getAuthToken(request)) {
-    console.log('no token');
     const { code, message } = Errors.noToken();
     response.status(code).json(message);
   } else if (!isAdmin(request)) {
-    console.log('is not admin');
     const { code, message } = Errors.unAuthorized();
     response.status(code).json(message);
   } else {

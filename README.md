@@ -66,6 +66,11 @@ API server will start on http://localhost:3000/
 ### Backend
 * Use a better authentication mechanism - use passport or similar for saving auth token in database instead of application state
 * Encrypt passwords
+* Possibly use some ORM to replace SQL queries
+* Use typescript definitions for API spec
+* Translate database errors into human friendly API errors
 
-## General
+### General
 * Set up for production
+* Write test cases
+* Internationalization/Localization

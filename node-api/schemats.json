@@ -1,0 +1,11 @@
+{
+  "conn": "postgres://qwjszpap:m_VyqLU2pyKDHbj9sbfG502Vn8BH8tMQ@isilo.db.elephantsql.com:5432/qwjszpap",
+  "table": [
+    "users",
+    "employees",
+    "performance_reviews",
+    "feedback"
+  ],
+  "output": "../shared/models.ts",
+  "camelCase": true
+}

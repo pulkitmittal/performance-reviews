@@ -1,9 +1,18 @@
+// TODO add localization
+
 export interface ErrorModel {
   code: number;
   message: string;
 }
 
 class Errors {
+
+  static notXHR(): ErrorModel {
+    return {
+      code: 403,
+      message: 'Please add \'X-Requested-With\' header with \'xmlhttprequest\' value'
+    };
+  }
 
   static noToken(): ErrorModel {
     return {
@@ -38,6 +47,13 @@ class Errors {
       code: 400,
       message: `Missing value for ${field}`
     }
+  }
+
+  static unregrettableError(): ErrorModel {
+    return {
+      code: 500,
+      message: 'Something failed! Deep apologies m(_ _)m'
+    };
   }
 }
 export default Errors;

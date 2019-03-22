@@ -15,6 +15,11 @@
 						"name": "Content-Type",
 						"value": "application/x-www-form-urlencoded",
 						"type": "text"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "xmlhttprequest",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -55,6 +60,11 @@
 						"key": "token",
 						"value": "12345",
 						"type": "text"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "xmlhttprequest",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -90,6 +100,11 @@
 						"name": "Content-Type",
 						"value": "application/x-www-form-urlencoded",
 						"type": "text"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "xmlhttprequest",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -97,17 +112,17 @@
 					"urlencoded": [
 						{
 							"key": "name",
-							"value": "Pulkit Mittal",
+							"value": "Melissa White",
 							"type": "text"
 						},
 						{
 							"key": "post",
-							"value": "Full Stack Engineer",
+							"value": "Operator",
 							"type": "text"
 						},
 						{
 							"key": "department",
-							"value": "Product Development",
+							"value": "Accounts",
 							"type": "text"
 						},
 						{
@@ -146,6 +161,11 @@
 						"name": "Content-Type",
 						"value": "application/x-www-form-urlencoded",
 						"type": "text"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "xmlhttprequest",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -174,7 +194,7 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:3000/employees/1",
+					"raw": "http://localhost:3000/employees/4",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -182,7 +202,7 @@
 					"port": "3000",
 					"path": [
 						"employees",
-						"1"
+						"4"
 					]
 				}
 			},
@@ -234,7 +254,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:3000/employees/2",
+					"raw": "http://localhost:3000/employees/3",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -242,7 +262,92 @@
 					"port": "3000",
 					"path": [
 						"employees",
-						"2"
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get reviews",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "12345",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/reviews",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"reviews"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add review",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "12345",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "xmlhttprequest",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "empId",
+							"value": "4",
+							"type": "text"
+						},
+						{
+							"key": "dueDate",
+							"value": "2019-03-30",
+							"type": "text"
+						},
+						{
+							"key": "reviewerIds[]",
+							"value": "6",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/reviews",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"reviews"
 					]
 				}
 			},

@@ -1,8 +1,10 @@
 import bodyParser from 'body-parser';
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import * as core from 'express-serve-static-core';
 import methodOverride from 'method-override';
+import uniqid from 'uniqid';
 
+import Errors from '../../shared/errors';
 import api from './api';
 import auth from './auth';
 
@@ -15,9 +17,16 @@ class App {
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: true }));
     this.app.use(methodOverride());
-    this.app.use(logErrors);
-    this.app.use(clientErrorHandler);
-    this.app.use(errorHandler);
+
+    // make sure the incoming requests are all XHR
+    this.app.use(function (req: Request, res: Response, next: NextFunction) {
+      if (!req.xhr) {
+        const { code, message } = Errors.notXHR();
+        res.status(code).json(message);
+      } else {
+        next();
+      }
+    });
 
     this.mountRoutes();
   }
@@ -30,16 +39,16 @@ class App {
     router.post('/logout', auth.logout);
 
     // Employee related
-    router.get('/employees', auth.ifAdmin, api.getEmployees);
-    router.post('/employees', auth.ifAdmin, api.addEmployee);
-    router.get('/employees/:id', auth.ifAdmin, api.getEmployee);
-    router.put('/employees/:id', auth.ifAdmin, api.updateEmployee);
-    router.delete('/employees/:id', auth.ifAdmin, api.deleteEmployee);
+    router.get('/employees', auth.ifAdmin, (req, res) => wrapper(api.getEmployees, req, res));
+    router.post('/employees', auth.ifAdmin, (req, res) => wrapper(api.addEmployee, req, res));
+    router.get('/employees/:id', auth.ifAdmin, (req, res) => wrapper(api.getEmployee, req, res));
+    router.put('/employees/:id', auth.ifAdmin, (req, res) => wrapper(api.updateEmployee, req, res));
+    router.delete('/employees/:id', auth.ifAdmin, (req, res) => wrapper(api.deleteEmployee, req, res));
 
     // Reviews related
-    router.get('/reviews');
-    router.post('/reviews');
-    router.get('/reviews/:id');
+    router.get('/reviews', auth.ifAdmin, (req, res) => wrapper(api.getReviews, req, res));
+    router.post('/reviews', auth.ifAdmin, (req, res) => wrapper(api.addReview, req, res));
+    router.get('/reviews/:id', auth.ifAdmin, (req, res) => wrapper(api.getReview, req, res));
     router.put('/reviews/:id');
 
     // Feedback
@@ -50,22 +59,27 @@ class App {
 
 }
 
-function logErrors(err: any, req: core.Request, res: core.Response, next: core.NextFunction): any {
-  console.error(err.stack);
-  next(err);
-}
-
-function clientErrorHandler(err: any, req: core.Request, res: core.Response, next: core.NextFunction): any {
-  if (req.xhr) {
-    res.status(500).send({ error: 'Something failed!' });
-  } else {
-    next(err);
+function wrapper(func: (req: Request, res: Response) => Promise<void>,
+  req: Request, res: Response) {
+  try {
+    const reqId = uniqid();
+    console.log('Processing request:', reqId, req.method, req.path, req.params);
+    func.call(null, req, res)
+      .then(() => {
+        if (res.headersSent) {
+          console.log('Request processed:', reqId);
+        }
+      })
+      .catch((err: any) => handleErrors(err, req, res));
+  } catch (err) {
+    handleErrors(err, req, res);
   }
 }
 
-function errorHandler(err: any, req: core.Request, res: core.Response, next: core.NextFunction): any {
-  res.status(500);
-  res.render('error', { error: err });
+function handleErrors(err: any, req: Request, res: Response) {
+  console.error('[Error]', err.stack);
+  const { code, message } = Errors.unregrettableError();
+  res.status(code).send(err.stack || { error: message });
 }
 
 export default new App().app;
