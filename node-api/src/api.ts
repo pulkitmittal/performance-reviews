@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 
-import { Employee, PerformanceReview } from '..';
+import { Employee, Feedback, PerformanceReview, ReviewResponse } from '..';
 import Errors from '../../shared/errors';
+import auth from './auth';
 import queries from './queries';
 
 const getEmployee = (request: Request, response: Response) => {
@@ -76,21 +77,35 @@ const getReview = (request: Request, response: Response) => {
     const { code, message } = Errors.missing('id');
     response.status(code).send(message);
   } else {
-    return queries.getReview(id).then(reviews => {
-      response.status(200).json(reviews);
+    return Promise.all([
+      queries.getReview(id),
+      queries.getFeedback(id)
+    ]).then(([review, feedbacks]) => {
+      const resp: ReviewResponse = {
+        ...review,
+        feedbacks
+      };
+      response.status(200).json(resp);
     });
   }
 };
 
 const getReviews = (request: Request, response: Response) => {
-  return queries.getReviews().then(reviews => {
-    response.status(200).json(reviews);
+  return Promise.all([
+    queries.getReviews(),
+    queries.getAllFeedbacks()
+  ]).then(([reviews, feedbacks]) => {
+    const resp: ReviewResponse[] = reviews.map(review => ({
+      ...review,
+      feedbacks: feedbacks.filter(f => f.id === review.id)
+    }));
+    response.status(200).json(resp);
   });
 };
 
 const addReview = (request: Request, response: Response) => {
   const { empId, dueDate }: PerformanceReview = (request.body || {});
-  let { reviewerIds }: { reviewerIds: number[] } = (request.body || {});
+  const { reviewerIds }: { reviewerIds: number[] } = (request.body || {});
 
   if (!empId || !dueDate) {
     const field: string = !empId && 'empId' || !dueDate && 'dueDate';
@@ -99,24 +114,7 @@ const addReview = (request: Request, response: Response) => {
 
   } else {
     return queries.addReview({ empId, dueDate })
-      .then(id => {
-        return new Promise<[number, number, number]>((resolve, reject) => {
-          try {
-            if (reviewerIds && typeof reviewerIds === 'object' && reviewerIds.length) {
-              reviewerIds = reviewerIds.map(rId => +rId).filter(rId => !isNaN(rId) && rId !== empId);
-              console.log('reviewerIds:', reviewerIds, typeof reviewerIds, reviewerIds.length);
-              if (reviewerIds.length) {
-                queries.addFeedbacks(id, reviewerIds)
-                  .then(([added, deleted]) => resolve([id, added, deleted]));
-                return;
-              }
-            }
-            resolve([id, 0, 0]);
-          } catch (e) {
-            reject(e);
-          }
-        });
-      })
+      .then(id => setReviewers(id, empId, reviewerIds))
       .then(([id, added, deleted]) => {
         response.status(201).send(
           `Review added with ID: ${id}; ${added} feedbacks added; ${deleted} feedbacks deleted`
@@ -125,23 +123,107 @@ const addReview = (request: Request, response: Response) => {
   }
 };
 
-// const updateReview = (request: Request, response: Response) => {
-//   const id = +request.params.id;
-//   const { empId, reviewerId, status, dueDate }: PerformanceReview = (request.body || {});
-//   if (!empId || !reviewerId || !status || !dueDate) {
-//     const field: string = !empId && 'empId' ||
-//       !reviewerId && 'reviewerId' ||
-//       !status && 'status' ||
-//       !dueDate && 'dueDate';
-//     const { code, message } = Errors.missing(field);
-//     response.status(code).send(message);
-//   } else {
-//     queries.addReview({ empId, reviewerId, status, dueDate })
-//       .then(id => {
-//         response.status(201).send(`Review added with ID: ${id}`);
-//       });
-//   }
-// };
+const setReviewers = (prId: number, empId: number, reviewerIds: number[]) => {
+  console.log('setReviewers:', prId, empId, reviewerIds);
+  return new Promise<[number, number, number]>((resolve, reject) => {
+    try {
+      if (reviewerIds && typeof reviewerIds === 'object' && reviewerIds.length) {
+        reviewerIds = reviewerIds.map(rId => +rId).filter(rId => !isNaN(rId) && rId !== empId);
+        console.log('reviewerIds:', reviewerIds, typeof reviewerIds, reviewerIds.length);
+        if (reviewerIds.length) {
+          queries.setReviewers(prId, reviewerIds)
+            .then(([added, deleted]) => resolve([prId, added, deleted]));
+          return;
+        }
+      }
+      resolve([prId, 0, 0]);
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+const updateReview = (request: Request, response: Response) => {
+  const id = +request.params.id;
+  const { empId, dueDate }: PerformanceReview = (request.body || {});
+  const { reviewerIds }: { reviewerIds: number[] } = (request.body || {});
+
+  if (!id || !empId || !dueDate) {
+    const field: string = !id && 'id' || !empId && 'empId' || !dueDate && 'dueDate';
+    const { code, message } = Errors.missing(field);
+    response.status(code).send(message);
+  } else {
+    return queries.updateReview({ id, dueDate })
+      .then((count) => {
+        if (count === 1) {
+          return setReviewers(id, empId, reviewerIds);
+        } else {
+          throw Error(`Cannot update review with ID: ${id}`);
+        }
+      })
+      .then(([_, added, deleted]) => {
+        response.status(200).send(
+          `Review updated with ID: ${id}; ${added} feedbacks added; ${deleted} feedbacks deleted`
+        );
+      });
+  }
+};
+
+const deleteReview = (request: Request, response: Response) => {
+  const id = +request.params.id;
+  if (!id) {
+    const { code, message } = Errors.missing('id');
+    response.status(code).send(message);
+  } else {
+    return queries.deleteReview(id)
+      .then(rows => {
+        if (rows === 1) {
+          response.status(200).send(`Review deleted with ID: ${id}`);
+        } else {
+          response.status(200).send(`Review with ID: ${id} cannot be deleted`);
+        }
+      });
+  }
+};
+
+const getFeedbacks = (request: Request, response: Response) => {
+  const user = auth.getAuthUser(request);
+  if (user.empId) {
+    return queries.getFeedbacks(user.empId).then(feedbacks => {
+      response.status(200).json(feedbacks);
+    });
+  } else {
+    const { code, message } = Errors.notForAdmin();
+    response.status(code).send(message);
+  }
+};
+
+const updateFeedback = (req: Request, res: Response) => {
+  const user = auth.getAuthUser(req);
+  const id = +req.params.id;
+  const { status, response }: Feedback = (req.body || {});
+
+  if (!id || !status || !response) {
+    const field: string = !id && 'id' || !status && 'status' || !response && 'response';
+    const { code, message } = Errors.missing(field);
+    res.status(code).send(message);
+
+  } else if (!user.empId) {
+    const { code, message } = Errors.notForAdmin();
+    res.status(code).send(message);
+
+  } else {
+    return queries.updateFeedback({ id, reviewerId: user.empId, status, response })
+      .then(count => {
+        res.status(200).send(
+          count === 1 ?
+            `Feedback updated with ID: ${id}` :
+            `Feedback not updated for ID: ${id}`
+        );
+      });
+
+  }
+};
 
 export default {
   getEmployee,
@@ -152,5 +234,8 @@ export default {
   getReview,
   getReviews,
   addReview,
-  // updateReview
+  updateReview,
+  deleteReview,
+  getFeedbacks,
+  updateFeedback
 };

@@ -9,13 +9,25 @@ import queries from './queries';
 const userTokens = new Map<string, User>();
 
 // Added only for testing APIs - TODO remove this
+const dummyUser: User = {
+  id: 1,
+  empId: null,
+  username: 'smith',
+  password: 'passw0rd',
+  role: 'admin'
+};
+const dummyEmpUser: User = {
+  id: 2,
+  empId: 6,
+  username: 'karen',
+  password: 'passw0rd',
+  role: 'employee'
+};
 userTokens.set(
-  '12345', {
-    id: 1,
-    username: 'smith',
-    password: 'passw0rd',
-    role: 'admin'
-  }
+  '12345', dummyUser
+);
+userTokens.set(
+  '54321', dummyEmpUser
 );
 
 const getAuthToken = (request: Request): string => {
@@ -85,7 +97,7 @@ const login = (request: Request, response: Response) => {
       if (user) {
         res = {
           login: true,
-          user: Utils.pluck(user, 'id', 'username', 'role'),
+          user: Utils.pluck(user, 'id', 'empId', 'username', 'role'),
           token: uniqid()
         };
         userTokens.set(res.token, user);
@@ -115,5 +127,6 @@ export default {
   login,
   logout,
   ifAuthenticated,
-  ifAdmin
+  ifAdmin,
+  getAuthUser
 };

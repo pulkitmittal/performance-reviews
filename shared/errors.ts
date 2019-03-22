@@ -55,5 +55,12 @@ class Errors {
       message: 'Something failed! Deep apologies m(_ _)m'
     };
   }
+
+  static notForAdmin(): ErrorModel {
+    return {
+      code: 401,
+      message: 'This operation is not for admin user'
+    }
+  }
 }
 export default Errors;

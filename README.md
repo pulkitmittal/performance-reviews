@@ -50,6 +50,8 @@ API server will start on http://localhost:3000/
 ***
 
 ## Assumptions
+* Feedback is question based. 
+* Feedback has 4 questions, the order and the questions won't change.
 
 ***
 
@@ -69,8 +71,10 @@ API server will start on http://localhost:3000/
 * Possibly use some ORM to replace SQL queries
 * Use typescript definitions for API spec
 * Translate database errors into human friendly API errors
+* Use database transactions for atomicity
 
 ### General
 * Set up for production
 * Write test cases
 * Internationalization/Localization
+* Use better loggers and add comments

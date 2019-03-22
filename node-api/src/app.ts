@@ -49,10 +49,12 @@ class App {
     router.get('/reviews', auth.ifAdmin, (req, res) => wrapper(api.getReviews, req, res));
     router.post('/reviews', auth.ifAdmin, (req, res) => wrapper(api.addReview, req, res));
     router.get('/reviews/:id', auth.ifAdmin, (req, res) => wrapper(api.getReview, req, res));
-    router.put('/reviews/:id');
+    router.put('/reviews/:id', auth.ifAdmin, (req, res) => wrapper(api.updateReview, req, res));
+    router.delete('/reviews/:id', auth.ifAdmin, (req, res) => wrapper(api.deleteReview, req, res));
 
-    // Feedback
-    router.put('/feedback/:id');
+    // Feedback (data returned is for logged in user)
+    router.get('/feedback', auth.ifAuthenticated, (req, res) => wrapper(api.getFeedbacks, req, res));
+    router.put('/feedback/:id', auth.ifAuthenticated, (req, res) => wrapper(api.updateFeedback, req, res));
 
     this.app.use('/', router);
   }
