@@ -1,15 +1,15 @@
 {
-  "name": "node-api",
+  "name": "server",
   "version": "1.0.0",
   "description": "RESTful API with Node.js, Express, and PostgreSQL",
   "main": "index.js",
   "author": "Pulkit Mittal <er.pulkitmittal@gmail.com>",
   "scripts": {
     "clean": "rm -rf ./dist",
-    "start": "yarn run clean && yarn run build && node dist/node-api/src/index.js",
+    "start": "yarn run clean && yarn run build && node dist/server/src/index.js",
     "build": "./node_modules/.bin/tsc",
     "compile": "yarn run build --watch",
-    "debug": "./node_modules/.bin/nodemon dist/node-api/src/index.js",
+    "debug": "./node_modules/.bin/nodemon dist/server/src/index.js",
     "models": "./node_modules/.bin/schemats generate"
   },
   "license": "MIT",

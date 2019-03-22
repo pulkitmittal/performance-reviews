@@ -112,17 +112,17 @@
 					"urlencoded": [
 						{
 							"key": "name",
-							"value": "Melissa White",
+							"value": "Mark Vargas",
 							"type": "text"
 						},
 						{
 							"key": "post",
-							"value": "Operator",
+							"value": "Telecom Operator",
 							"type": "text"
 						},
 						{
 							"key": "department",
-							"value": "Accounts",
+							"value": "Support",
 							"type": "text"
 						},
 						{
@@ -247,6 +247,11 @@
 						"key": "token",
 						"value": "12345",
 						"type": "text"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "xmlhttprequest",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -254,7 +259,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:3000/employees/3",
+					"raw": "http://localhost:3000/employees/7",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -262,7 +267,7 @@
 					"port": "3000",
 					"path": [
 						"employees",
-						"3"
+						"7"
 					]
 				}
 			},
@@ -276,6 +281,11 @@
 					{
 						"key": "token",
 						"value": "12345",
+						"type": "text"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "xmlhttprequest",
 						"type": "text"
 					}
 				],
@@ -292,6 +302,41 @@
 					"port": "3000",
 					"path": [
 						"reviews"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get review",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "12345",
+						"type": "text"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "xmlhttprequest",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/reviews/6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"reviews",
+						"6"
 					]
 				}
 			},
@@ -324,7 +369,7 @@
 					"urlencoded": [
 						{
 							"key": "empId",
-							"value": "4",
+							"value": "5",
 							"type": "text"
 						},
 						{
@@ -334,7 +379,7 @@
 						},
 						{
 							"key": "reviewerIds[]",
-							"value": "6",
+							"value": "4",
 							"type": "text"
 						}
 					]
@@ -348,6 +393,211 @@
 					"port": "3000",
 					"path": [
 						"reviews"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update review",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "token",
+						"type": "text",
+						"value": "12345"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "X-Requested-With",
+						"type": "text",
+						"value": "xmlhttprequest"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "empId",
+							"value": "5",
+							"type": "text"
+						},
+						{
+							"key": "dueDate",
+							"value": "2019-03-31",
+							"type": "text"
+						},
+						{
+							"key": "reviewerIds[]",
+							"value": "4",
+							"type": "text"
+						},
+						{
+							"key": "reviewerIds[]",
+							"value": "6",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/reviews/49",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"reviews",
+						"49"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete review",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "token",
+						"value": "12345",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "xmlhttprequest",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "empId",
+							"value": "5",
+							"type": "text"
+						},
+						{
+							"key": "dueDate",
+							"value": "2019-03-30",
+							"type": "text"
+						},
+						{
+							"key": "reviewerIds[]",
+							"value": "4",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/reviews/46",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"reviews",
+						"46"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get feedbacks",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"type": "text",
+						"value": "54321"
+					},
+					{
+						"key": "X-Requested-With",
+						"type": "text",
+						"value": "xmlhttprequest"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/feedback",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"feedback"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update feedback",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "token",
+						"type": "text",
+						"value": "54321"
+					},
+					{
+						"key": "X-Requested-With",
+						"type": "text",
+						"value": "xmlhttprequest"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "status",
+							"value": "in-progress",
+							"type": "text"
+						},
+						{
+							"key": "response",
+							"value": "{\"abc\":true}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/feedback/6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"feedback",
+						"6"
 					]
 				}
 			},

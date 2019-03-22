@@ -36,16 +36,43 @@ https://github.com/TypeStrong/ts-node
 Using express
 https://expressjs.com/
 
+### Vuejs
+
+Using Vue.js with Typescript for front-end development
+https://vuejs.org/v2/guide/typescript.html
+
+### Bulma (Buefy)
+
+Using Buefy (Bulma support for Vuejs)
+https://buefy.org/documentation/start
+
 ***
 
 ## Run on local
 
+### Server
+
 If yarn is not installed, follow the steps here: https://yarnpkg.com/lang/en/docs/install/<br>
-* Go to node-api `cd node-api`
+* Go to server `cd server`
 * Run `yarn install`
 * Run `yarn run start`
 
 API server will start on http://localhost:3000/
+
+### Frontend
+
+* Go to frontend `cd frontend`
+* Run `yarn install`
+* Run `yarn run serve`
+
+Front website will start on http://localhost:8080/
+
+### Credentials
+
+* Use smith/passw0rd for admin login
+* Use karen/passw0rd for employee login
+* Any new employee added from admin login, will have a user account associated.
+  * If user's name is Brandon Lane, username would be `brandon-lane` and password would be `passw0rd`.
 
 ***
 
@@ -64,6 +91,8 @@ API server will start on http://localhost:3000/
 * Create admin reviews view
 * Create user reviews list view
 * Create user individual review view
+* Cross browser testing
+* Find a windows machine to test on IE :(
 
 ### Backend
 * Use a better authentication mechanism - use passport or similar for saving auth token in database instead of application state
