@@ -1,0 +1,9 @@
+@charset "utf-8";
+
+@import "../../node_modules/bulma/sass/utilities/initial-variables.sass";
+
+// Modify bulma variables
+$navbar-breakpoint: $tablet !default;
+$navbar-height: 4rem !default;
+
+@import "../../node_modules/bulma/bulma.sass";

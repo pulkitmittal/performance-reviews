@@ -30,21 +30,17 @@ You can use https://franchise.cloud/app/ for GUI.
 
 ### TS-Node
 
-Using typescript with Node
-https://github.com/TypeStrong/ts-node
+[Using typescript with Node](https://github.com/TypeStrong/ts-node)
 
-Using express
-https://expressjs.com/
+[Using express](https://expressjs.com/)
 
-### Vuejs
+### Angular
 
-Using Vue.js with Typescript for front-end development
-https://vuejs.org/v2/guide/typescript.html
+[Using Angular with Typescript](https://angular.io/)
 
-### Bulma (Buefy)
+### Bulma
 
-Using Buefy (Bulma support for Vuejs)
-https://buefy.org/documentation/start
+[Using Bulma](https://bulma.io)
 
 ***
 
@@ -52,9 +48,9 @@ https://buefy.org/documentation/start
 
 ### Server
 
-If yarn is not installed, follow the steps here: https://yarnpkg.com/lang/en/docs/install/<br>
+If yarn is not installed, follow the steps [here](https://yarnpkg.com/lang/en/docs/install/).<br>
 * Go to server `cd server`
-* Run `yarn install`
+* Run `yarn`
 * Run `yarn run start`
 
 API server will start on http://localhost:3000/
@@ -62,10 +58,10 @@ API server will start on http://localhost:3000/
 ### Frontend
 
 * Go to frontend `cd frontend`
-* Run `yarn install`
+* Run `yarn`
 * Run `yarn run serve`
 
-Front website will start on http://localhost:8080/
+Front website will start on http://localhost:4200/
 
 ### Credentials
 

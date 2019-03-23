@@ -1,0 +1,24 @@
+<section class="section">
+  <div class="container box">
+    <h1 class="title">Performance Reviews</h1>
+    <div class="field">
+      <p class="control has-icons-left">
+        <input class="input" type="email" [value]="username" placeholder="Username">
+        <span class="icon is-small is-left">
+          <i class="material-icons">person</i>
+        </span>
+      </p>
+    </div>
+    <div class="field">
+      <p class="control has-icons-left">
+        <input class="input" type="password" [value]="password" placeholder="Password">
+        <span class="icon is-small is-left">
+          <i class="material-icons">lock</i>
+        </span>
+      </p>
+    </div>
+    <div class="control">
+      <button class="button is-link is-outlined" (click)="login()">Login</button>
+    </div>
+  </div>
+</section>
