@@ -1,9 +1,6 @@
 <template>
   <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-      <!-- <a class="navbar-item" href="https://bulma.io">
-        <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
-      </a> -->
       <router-link class="navbar-item" to="/">
         <span class="icon is-large">
           <i class="fas fa-users fa-lg"></i>
@@ -11,58 +8,46 @@
         Performance Reviews
       </router-link>
 
-      <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <a v-if="isLoggedIn" role="button" class="navbar-burger burger" 
+        aria-label="menu" aria-expanded="false" data-target="navMenu">
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
       </a>
     </div>
 
-    <!-- <div id="navbarBasicExample" class="navbar-menu">
-      <div class="navbar-start">
-        <a class="navbar-item">
-          Home
-        </a>
+    <div v-if="isLoggedIn" id="navMenu" class="navbar-menu">
+      <div v-if="isAdmin" class="navbar-start">
+        <router-link class="navbar-item" to="/employees">Employees</router-link>
+        <router-link class="navbar-item" to="/reviews">Reviews</router-link>
+      </div>
 
-        <a class="navbar-item">
-          Documentation
-        </a>
-
-        <div class="navbar-item has-dropdown is-hoverable">
-          <a class="navbar-link">
-            More
-          </a>
-
-          <div class="navbar-dropdown">
-            <a class="navbar-item">
-              About
-            </a>
-            <a class="navbar-item">
-              Jobs
-            </a>
-            <a class="navbar-item">
-              Contact
-            </a>
-            <hr class="navbar-divider">
-            <a class="navbar-item">
-              Report an issue
-            </a>
-          </div>
-        </div>
-      </div> -->
-
-      <!-- <div class="navbar-end">
+      <div class="navbar-end">
         <div class="navbar-item">
-          <div class="buttons">
-            <a class="button is-primary">
-              <strong>Sign up</strong>
-            </a>
-            <a class="button is-light">
-              Log in
-            </a>
-          </div>
+          <div class="navbar-item">{{ user }}</div>
+          <a class="navbar-item button is-dark" v-on:click="logout">Logout</a>
         </div>
-      </div> -->
+      </div>
     </div>
   </nav>
 </template>
+
+<script lang="ts">
+import Vue from 'vue';
+import Component from 'vue-class-component';
+
+@Component({})
+export default class NavBar extends Vue {
+  public isAdmin: boolean = true;
+  public isLoggedIn: boolean = true;
+  public user: string = 'User';
+
+  public logout(): void {
+    // make logout ajax call
+    // redirect to login
+  }
+}
+</script>
+
+<style scoped lang="scss">
+</style>

@@ -19,7 +19,7 @@
         </p>
       </div>
       <div class="control">
-        <button class="button is-primary" v-on:click="login">Login</button>
+        <button class="button is-link is-outlined" v-on:click="login">Login</button>
       </div>
     </div>
   </section>
