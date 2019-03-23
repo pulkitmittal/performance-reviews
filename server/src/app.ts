@@ -18,9 +18,18 @@ class App {
     this.app.use(bodyParser.urlencoded({ extended: true }));
     this.app.use(methodOverride());
 
+    // Enable CORS
+    this.app.use(function (req, res, next) {
+      res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
+      res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
+      res.header('Access-Control-Allow-Headers', 'token, Origin, X-Requested-With, Content-Type, Accept');
+      next();
+    });
+
     // make sure the incoming requests are all XHR
     this.app.use(function (req: Request, res: Response, next: NextFunction) {
-      if (!req.xhr) {
+      console.log('xhk check:', req.method, req.xhr);
+      if (req.method !== 'OPTIONS' && !req.xhr) {
         const { code, message } = Errors.notXHR();
         res.status(code).json(message);
       } else {

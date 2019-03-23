@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { ApiService } from './services/api.service';
+import { AuthService } from './services/auth.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -15,18 +18,29 @@ export class AppComponent implements OnInit {
 
   menuOpen = false;
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private api: ApiService,
+    private auth: AuthService
+  ) { }
 
   ngOnInit() {
-    console.log('ngoninit', this.user, this.menuOpen);
-    this.user = {
-      name: 'Pulkit',
-      admin: true
-    };
+    this.auth.getLoggedInUser$()
+      .subscribe(user => {
+        this.user = user ? {
+          name: user.username + (user.role === 'admin' ? ' (admin)' : ''),
+          admin: user.role === 'admin'
+        } : null;
+      });
   }
 
   logout() {
     // TODO make logout ajax call
-    this.router.navigateByUrl('/login?logout=1');
+    this.api.logout().then(() => {
+      this.auth.logout();
+      this.router.navigate(['login'], {
+        queryParams: { logout: 1 }
+      });
+    });
   }
 }

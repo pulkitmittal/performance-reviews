@@ -1,0 +1,79 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Employee, LoginRequest, LoginResponse } from 'index';
+import { first } from 'rxjs/operators';
+
+import { AuthService } from './auth.service';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ApiService {
+
+  serverUrl = 'http://localhost:3000';
+
+  constructor(
+    private http: HttpClient,
+    private auth: AuthService
+  ) { }
+
+  login(username: string, password: string): Promise<LoginResponse> {
+    const requestBody: LoginRequest = {
+      username, password
+    };
+    return this.http.post<LoginResponse>(`${this.serverUrl}/login`, requestBody, {
+      headers: {
+        'X-Requested-With': 'xmlhttprequest'
+      }
+    }).pipe(first()).toPromise();
+  }
+
+  logout() {
+    return this.http.post(`${this.serverUrl}/logout`, {}, {
+      headers: {
+        'X-Requested-With': 'xmlhttprequest',
+        'token': this.auth.getAuthToken()
+      }
+    }).pipe(first()).toPromise();
+  }
+
+  fetchEmployees() {
+    return this.http.get<Employee[]>(`${this.serverUrl}/employees`, {
+      headers: {
+        'X-Requested-With': 'xmlhttprequest',
+        'token': this.auth.getAuthToken()
+      }
+    }).pipe(first()).toPromise();
+  }
+
+  addEmployee(emp: Employee) {
+    return this.http.post(`${this.serverUrl}/employees`, emp, {
+      headers: {
+        'X-Requested-With': 'xmlhttprequest',
+        'token': this.auth.getAuthToken()
+      },
+      responseType: 'text'
+    }).pipe(first()).toPromise();
+  }
+
+  editEmployee(emp: Employee) {
+    return this.http.put(`${this.serverUrl}/employees/${emp.id}`, emp, {
+      headers: {
+        'X-Requested-With': 'xmlhttprequest',
+        'token': this.auth.getAuthToken()
+      },
+      responseType: 'text'
+    }).pipe(first()).toPromise();
+  }
+
+  deleteEmployee(emp: Employee) {
+    return this.http.delete(`${this.serverUrl}/employees/${emp.id}`, {
+      headers: {
+        'X-Requested-With': 'xmlhttprequest',
+        'token': this.auth.getAuthToken()
+      },
+      responseType: 'text'
+    }).pipe(first()).toPromise();
+  }
+
+}

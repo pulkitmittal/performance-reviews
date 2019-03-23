@@ -1,3 +1,123 @@
-<p>
-  employees works!
-</p>
+<div class="content">
+  <h1>Employees List
+    <button class="button is-link is-pulled-right" (click)="showAddEmpModal()">
+      <i class="material-icons">add</i>Add Employee
+    </button>
+  </h1>
+  <table class="table is-striped">
+    <thead>
+      <th>Name</th>
+      <th>Designation</th>
+      <th>Department</th>
+      <th>Location</th>
+      <th></th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let emp of employees | slice:paging?.start:paging?.end">
+        <td>{{emp.name}}</td>
+        <td>{{emp.post}}</td>
+        <td>{{emp.department}}</td>
+        <td>{{emp.location}}</td>
+        <td>
+          <div class="field is-grouped">
+            <p class="control">
+              <button class="button is-light" title="Edit" (click)="showEditEmpModal(emp)">
+                <i class="material-icons md-18">edit</i>
+              </button>
+            </p>
+            <p class="control">
+              <button class="button is-danger" title="Delete" (click)="showDelEmpModal(emp)">
+                <i class="material-icons md-18">delete</i>
+              </button>
+            </p>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<nav class="pagination" role="navigation" aria-label="pagination" *ngIf="paging">
+  Pages:
+  <ul class="pagination-list">
+    <li *ngFor="let num of paging.numbers">
+      <a class="pagination-link" [class.is-current]="paging.current === num" (click)="setPage(num)">{{num}}</a>
+    </li>
+  </ul>
+</nav>
+
+<div class="modal is-active" *ngIf="editEmpData">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">{{ editEmpData?.mode === 'edit' ? 'Edit' : 'Add' }} Employee</p>
+      <button class="delete" aria-label="close" (click)="closeEmpModal()"></button>
+    </header>
+    <section class="modal-card-body">
+
+      <div class="notification is-danger" *ngIf="errorMsg">
+        <button class="delete" (click)="errorMsg=''"></button> Error: {{errorMsg}}
+      </div>
+
+      <div class="field">
+        <label class="label">Full Name</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="e.g. John Doe"
+            [value]="editEmpData?.name"
+            #name (change)="updateEmpData('name', name.value)">
+        </div>
+        <p class="help">Will be used to auto-generate username, so keep it unique for now.</p>
+      </div>
+      <div class="field">
+        <label class="label">Post</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="e.g. Accounts Manager"
+            [value]="editEmpData?.post"
+            #post (change)="updateEmpData('post', post.value)">
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Department</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="e.g. Finance"
+            [value]="editEmpData?.department"
+            #dept (change)="updateEmpData('department', dept.value)">
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Location</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="e.g. Tokyo, Japan"
+            [value]="editEmpData?.location"
+            #location (change)="updateEmpData('location', location.value)">
+        </div>
+      </div>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-link" (click)="saveEmp()" [class.is-loading]="saving">Save</button>
+      <button class="button" (click)="closeEmpModal()">Cancel</button>
+    </footer>
+  </div>
+</div>
+
+<div class="modal is-active" *ngIf="delEmpData">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Delete Employee</p>
+      <button class="delete" aria-label="close" (click)="closeEmpModal()"></button>
+    </header>
+    <section class="modal-card-body">
+      <div class="notification is-danger" *ngIf="errorMsg">
+        <button class="delete" (click)="errorMsg=''"></button> Error: {{errorMsg}}
+      </div>
+      <p>Deleting an employee will delete all data related to reviews, feedbacks and users. This action is irreversible.</p>
+      <p>Are you sure you want to delete the employee?</p>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-danger" (click)="delEmp()" [class.is-loading]="saving">Delete</button>
+      <button class="button" (click)="closeEmpModal()">Cancel</button>
+    </footer>
+  </div>
+</div>

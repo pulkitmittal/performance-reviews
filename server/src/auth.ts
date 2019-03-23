@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { LoginResponse, User } from 'index';
+import { LoginRequest, LoginResponse, User } from 'index';
 import uniqid from 'uniqid';
 
 import Errors from '../../shared/errors';
@@ -76,9 +76,7 @@ const ifAdmin = (request: Request, response: Response, next: NextFunction) => {
 
 const login = (request: Request, response: Response) => {
   let res: LoginResponse;
-  const body = request.body || {};
-  const username = body.username;
-  const password = body.password;
+  const { username, password }: LoginRequest = (request.body || {});
 
   console.log(`Username: ${username}, Password exists: ${!!password}`);
 
@@ -97,7 +95,7 @@ const login = (request: Request, response: Response) => {
       if (user) {
         res = {
           login: true,
-          user: Utils.pluck(user, 'id', 'empId', 'username', 'role'),
+          user: Utils.pluck(user, 'id', 'username', 'role'),
           token: uniqid()
         };
         userTokens.set(res.token, user);

@@ -87,6 +87,7 @@ Front website will start on http://localhost:4200/
 * Create admin reviews view
 * Create user reviews list view
 * Create user individual review view
+* Use cookie for saving auth token
 * Cross browser testing
 * Find a windows machine to test on IE :(
 

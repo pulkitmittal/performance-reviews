@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -36,7 +37,8 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes, {
       // useHash: true,
       // enableTracing: true,
-    })
+    }),
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

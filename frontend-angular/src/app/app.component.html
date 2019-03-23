@@ -1,7 +1,7 @@
-<nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+<nav class="navbar is-fixed-top is-link" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
     <a class="navbar-item" routerLink="/">
-      <i class="material-icons title">supervisor_account</i> Performance Reviews
+      <i class="material-icons md-36">supervisor_account</i> Performance Reviews
     </a>
 
     <a *ngIf="user" role="button" class="navbar-burger burger" [class.is-active]="menuOpen"
@@ -24,11 +24,13 @@
           <i class="material-icons">account_circle</i> {{ user.name }}
         </div>
         <div class="navbar-item">
-          <a class="button is-dark" href="#" (click)="logout()">Logout</a>
+          <a class="button is-white" href="#" (click)="logout()">Logout</a>
         </div>
       </div>
     </div>
   </div>
 </nav>
 
-<router-outlet></router-outlet>
+<section class="section">
+  <router-outlet></router-outlet>
+</section>

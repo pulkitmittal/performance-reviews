@@ -4,6 +4,28 @@
 
 // Modify bulma variables
 $navbar-breakpoint: $tablet !default;
-$navbar-height: 4rem !default;
+// $navbar-height: 4rem !default;
 
 @import "../../node_modules/bulma/bulma.sass";
+
+.material-icons {
+  margin-right: 4px;
+  &.md-18 {
+    font-size: 18px;
+  }
+  &.md-24 {
+    font-size: 24px;
+  }
+  &.md-36 {
+    font-size: 36px;
+  }
+  &.md-48 {
+    font-size: 48px;
+  }
+}
+.navbar.is-link {
+  .navbar-item,
+  .material-icons {
+    color: $white;
+  }
+}
