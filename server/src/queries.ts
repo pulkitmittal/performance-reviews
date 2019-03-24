@@ -1,6 +1,7 @@
 import * as pg from 'pg';
 
 import { Employee, Feedback, PerformanceReview, User } from '..';
+import { FeedbackResponse } from '../../shared/response.model';
 import { Omit } from '../../shared/utils';
 
 interface Results<T> { rows: Array<T>; }
@@ -195,11 +196,17 @@ const getAllFeedbacks = (): Promise<Feedback[]> => {
     });
 };
 
-const getFeedbacks = (emp_id: number): Promise<Feedback[]> => {
-  return pool.query(`SELECT * FROM feedback
-    WHERE
-    reviewer_id = $1`, [emp_id])
-    .then((results: Results<Feedback>) => {
+const getFeedbacks = (emp_id: number): Promise<FeedbackResponse[]> => {
+  const query = {
+    text: `SELECT p.*, e.name, e.post, e.department, e.location FROM (
+      SELECT p.*, f.assigned_date, f.status, f.response FROM
+      performance_reviews p INNER JOIN feedback f
+      ON p.id = f.id AND f.reviewer_id = $1) AS p
+      INNER JOIN employees e ON e.id = p.emp_id`,
+    values: [emp_id]
+  };
+  return pool.query(query)
+    .then((results: Results<FeedbackResponse>) => {
       return results.rows;
     });
 };

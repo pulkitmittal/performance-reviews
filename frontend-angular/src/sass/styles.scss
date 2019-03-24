@@ -4,8 +4,8 @@
 
 // Modify bulma variables
 $navbar-breakpoint: $tablet !default;
-// $navbar-height: 4rem !default;
 
+// TODO import only modules which are being used
 @import "../../node_modules/bulma/bulma.sass";
 
 .material-icons {
@@ -34,4 +34,7 @@ $navbar-breakpoint: $tablet !default;
 .select select[multiple] option[disabled] {
   background-color: $white-ter;
   color: $grey;
+}
+.notification {
+  padding: 0.5rem 1rem 0.5rem 0.5rem;
 }

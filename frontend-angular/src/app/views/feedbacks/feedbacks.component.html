@@ -1,0 +1,77 @@
+<div class="container">
+  <h1 class="title">Feedback Requests</h1>
+
+  <div class="notification is-danger" *ngIf="loadError">
+    <button class="delete" (click)="loadError=''"></button>{{loadError}}
+  </div>
+
+  <div class="columns is-multiline is-mobile">
+    <div class="column" *ngFor="let item of feedbackRequests">
+      <a class="box" (click)="openFeedbackModal(item)">
+        <p class="title is-5">{{item.name}}</p>
+        <div class="content">
+          <p>{{item.post}}</p>
+          <p>{{item.department}}</p>
+          <p>{{item.location}}</p>
+          <p>Assigned: {{item.assigned_date | date:'yyyy-MM-dd'}}</p>
+          <p>Due Date: {{item.due_date | date:'yyyy-MM-dd'}}</p>
+          <p>Status: {{item | feedback:'status':'title'}}</p>
+        </div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<div class="modal is-active" *ngIf="feedbackData">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Give Feedback</p>
+      <button class="delete" aria-label="close" (click)="closeFeedbackModal()"></button>
+    </header>
+    <section class="modal-card-body">
+      <div class="notification is-danger" *ngIf="errorMsg">
+        <button class="delete" (click)="errorMsg=''"></button> Error: {{errorMsg}}
+      </div>
+
+      <div class="field">
+        <p>1. Does this employee exhibit leadership qualities in the roles he plays in the company?</p>
+        <div class="control">
+          <textarea class="textarea" [value]="feedbackData.response['1']"
+            #q1 (change)="setResponse('1', q1.value)"
+            [disabled]="feedbackData.mode === 'view'"></textarea>
+        </div>
+      </div>
+      <div class="field">
+        <p>2. When this employee works with coworkers, what interpersonal skills does he demonstrate?</p>
+        <div class="control">
+          <textarea class="textarea" [value]="feedbackData.response['2']"
+            #q2 (change)="setResponse('2', q2.value)"
+            [disabled]="feedbackData.mode === 'view'"></textarea>
+        </div>
+      </div>
+      <div class="field">
+        <p>3. Does the employee effectively solve problems?</p>
+        <div class="control">
+          <textarea class="textarea" [value]="feedbackData.response['3']"
+            #q3 (change)="setResponse('3', q3.value)"
+            [disabled]="feedbackData.mode === 'view'"></textarea>
+        </div>
+      </div>
+      <div class="field">
+        <p>4. Does the employee appear to be motivated by his work-related tasks, job, and relationships?</p>
+        <div class="control">
+          <textarea class="textarea" [value]="feedbackData.response['4']"
+            #q4 (change)="setResponse('4', q4.value)"
+            [disabled]="feedbackData.mode === 'view'"></textarea>
+        </div>
+      </div>
+    </section>
+    <footer class="modal-card-foot" *ngIf="feedbackData.mode === 'edit'">
+      <button class="button is-info" (click)="saveDraft()" [class.is-loading]="saving">Save Draft</button>
+      <button class="button is-link" (click)="saveFeedback()" [class.is-loading]="saving">Publish</button>
+      <button class="button" (click)="closeFeedbackModal()">Cancel</button>
+    </footer>
+  </div>
+</div>

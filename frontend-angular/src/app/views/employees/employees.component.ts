@@ -10,6 +10,7 @@ import { ApiService } from 'src/app/services/api.service';
 export class EmployeesComponent implements OnInit {
 
   employees: Employee[] = [];
+  loadError = '';
 
   editEmpData: Employee & {
     mode: 'edit' | 'add'
@@ -53,10 +54,11 @@ export class EmployeesComponent implements OnInit {
       .catch(err => {
         console.log('Error:', err);
         this.employees = [];
+        this.loadError = 'Error while fetching employees data';
       });
   }
 
-  showAddEmpModal() {
+  openAddEmpModal() {
     this.editEmpData = {
       id: null,
       name: '',
@@ -67,7 +69,7 @@ export class EmployeesComponent implements OnInit {
     };
   }
 
-  showEditEmpModal(emp: Employee) {
+  openEditEmpModal(emp: Employee) {
     this.editEmpData = {
       ...emp,
       mode: 'edit'
@@ -110,7 +112,7 @@ export class EmployeesComponent implements OnInit {
     this.errorMsg = '';
   }
 
-  showDelEmpModal(emp: Employee) {
+  openDelEmpModal(emp: Employee) {
     this.delEmpData = emp;
   }
 

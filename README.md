@@ -85,13 +85,10 @@ Front website will start on http://localhost:4200/<br>
 ## TODO
 
 ### Frontend
-* Create user reviews list view
-* Create user individual review view
 * Use cookie for saving auth token
 * Use state management
-* Use server side pagination instead of client side
+* Use server side pagination instead of client side, or maybe use lazy-loading instead
 * Cross browser testing
-* Find a windows machine to test on IE :(
 
 ### Backend
 * Use a better authentication mechanism - use passport or similar for saving auth token in database instead of application state

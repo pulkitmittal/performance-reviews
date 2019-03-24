@@ -7,7 +7,7 @@ import { Employee } from 'index';
 export class EmployeePipe implements PipeTransform {
 
   transform(empId: number, employees: Employee[], key: keyof Employee): any {
-    console.log('transform:', empId, employees, key);
+    // console.log('transform:', empId, employees, key);
     return ((employees || []).find(e => e.id === empId) || {})[key];
   }
 

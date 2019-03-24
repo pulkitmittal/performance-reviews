@@ -6,16 +6,18 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { CustomMaterialModule } from './components/custom-material.module';
-import { EmployeesComponent } from './views/employees/employees.component';
-import { LoginComponent } from './views/login/login.component';
-import { ReviewsComponent } from './views/reviews/reviews.component';
 import { EmployeePipe } from './pipes/employee.pipe';
 import { FeedbackPipe } from './pipes/feedback.pipe';
+import { EmployeesComponent } from './views/employees/employees.component';
+import { FeedbacksComponent } from './views/feedbacks/feedbacks.component';
+import { LoginComponent } from './views/login/login.component';
+import { ReviewsComponent } from './views/reviews/reviews.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'employees', component: EmployeesComponent },
   { path: 'reviews', component: ReviewsComponent },
+  { path: 'feedback', component: FeedbacksComponent },
   {
     path: '**',
     redirectTo: '/login',
@@ -30,7 +32,8 @@ const appRoutes: Routes = [
     EmployeesComponent,
     ReviewsComponent,
     EmployeePipe,
-    FeedbackPipe
+    FeedbackPipe,
+    FeedbacksComponent
   ],
   imports: [
     BrowserModule,

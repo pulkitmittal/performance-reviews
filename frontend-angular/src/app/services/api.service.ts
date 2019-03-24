@@ -1,9 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AddReviewRequest, Employee, LoginRequest, LoginResponse, ReviewResponse } from 'index';
+import { AddReviewRequest, Employee, Feedback, FeedbackResponse, LoginRequest, LoginResponse, ReviewResponse } from 'index';
 import { first } from 'rxjs/operators';
 
 import { AuthService } from './auth.service';
+
+export interface FeedbackQuestions {
+  '1': string;
+  '2': string;
+  '3': string;
+  '4': string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -110,6 +117,25 @@ export class ApiService {
 
   deleteReview(id: number) {
     return this.http.delete(`${this.serverUrl}/reviews/${id}`, {
+      headers: {
+        'X-Requested-With': 'xmlhttprequest',
+        'token': this.auth.getAuthToken()
+      },
+      responseType: 'text'
+    }).pipe(first()).toPromise();
+  }
+
+  fetchFeedbackRequests() {
+    return this.http.get<FeedbackResponse[]>(`${this.serverUrl}/feedback`, {
+      headers: {
+        'X-Requested-With': 'xmlhttprequest',
+        'token': this.auth.getAuthToken()
+      }
+    }).pipe(first()).toPromise();
+  }
+
+  saveFeedback(id: number, feedback: Pick<Feedback, 'status' | 'response'>) {
+    return this.http.put(`${this.serverUrl}/feedback/${id}`, feedback, {
       headers: {
         'X-Requested-With': 'xmlhttprequest',
         'token': this.auth.getAuthToken()

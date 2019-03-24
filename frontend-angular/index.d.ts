@@ -6,7 +6,7 @@ import {
   users as User,
 } from '../shared/models';
 import { AddReviewRequest, LoginRequest } from '../shared/request.model';
-import { LoginResponse, ReviewResponse, SafeUser } from '../shared/response.model';
+import { FeedbackResponse, LoginResponse, ReviewResponse, SafeUser } from '../shared/response.model';
 
 export {
   User,
@@ -17,6 +17,7 @@ export {
   Feedback,
   LoginResponse,
   ReviewResponse,
+  FeedbackResponse,
   LoginRequest,
-  AddReviewRequest
+  AddReviewRequest,
 }

@@ -1,9 +1,12 @@
 <div class="content">
   <h1 class="title">Reviews List
-    <button class="button is-link is-pulled-right" (click)="showAddRevModal()">
+    <button class="button is-link is-pulled-right" (click)="openAddRevModal()">
       <i class="material-icons">add</i>Add Review
     </button>
   </h1>
+  <div class="notification is-danger" *ngIf="loadError">
+    <button class="delete" (click)="loadError=''"></button>{{loadError}}
+  </div>
   <table class="table is-striped">
     <thead>
       <th>Employee ID</th>
@@ -34,12 +37,12 @@
         <td>
           <div class="field is-grouped">
             <p class="control">
-              <button class="button is-light" title="Edit" (click)="showEditRevModal(rev)">
+              <button class="button is-light" title="Edit" (click)="openEditRevModal(rev)">
                 <i class="material-icons md-18">edit</i>
               </button>
             </p>
             <p class="control">
-              <button class="button is-danger" title="Delete" (click)="showDelRevModal(rev)">
+              <button class="button is-danger" title="Delete" (click)="openDelRevModal(rev)">
                 <i class="material-icons md-18">delete</i>
               </button>
             </p>

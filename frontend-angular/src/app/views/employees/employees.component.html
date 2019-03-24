@@ -1,9 +1,12 @@
 <div class="content">
   <h1 class="title">Employees List
-    <button class="button is-link is-pulled-right" (click)="showAddEmpModal()">
+    <button class="button is-link is-pulled-right" (click)="openAddEmpModal()">
       <i class="material-icons">add</i>Add Employee
     </button>
   </h1>
+  <div class="notification is-danger" *ngIf="loadError">
+    <button class="delete" (click)="loadError=''"></button>{{loadError}}
+  </div>
   <table class="table is-striped">
     <thead>
       <th>Name</th>
@@ -21,12 +24,12 @@
         <td>
           <div class="field is-grouped">
             <p class="control">
-              <button class="button is-light" title="Edit" (click)="showEditEmpModal(emp)">
+              <button class="button is-light" title="Edit" (click)="openEditEmpModal(emp)">
                 <i class="material-icons md-18">edit</i>
               </button>
             </p>
             <p class="control">
-              <button class="button is-danger" title="Delete" (click)="showDelEmpModal(emp)">
+              <button class="button is-danger" title="Delete" (click)="openDelEmpModal(emp)">
                 <i class="material-icons md-18">delete</i>
               </button>
             </p>

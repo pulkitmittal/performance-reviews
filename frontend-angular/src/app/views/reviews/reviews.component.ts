@@ -13,6 +13,7 @@ export class ReviewsComponent implements OnInit {
 
   reviews: ReviewResponse[];
   employees: Employee[];
+  loadError = '';
 
   editRevData: AddReviewRequest & {
     id: number,
@@ -40,6 +41,7 @@ export class ReviewsComponent implements OnInit {
       .catch(err => {
         console.log('Error:', err);
         this.reviews = [];
+        this.loadError = 'Error while fetching reviews data';
       });
   }
 
@@ -54,7 +56,7 @@ export class ReviewsComponent implements OnInit {
       });
   }
 
-  showAddRevModal() {
+  openAddRevModal() {
     this.editRevData = {
       id: null,
       emp_id: null,
@@ -64,7 +66,7 @@ export class ReviewsComponent implements OnInit {
     };
   }
 
-  showEditRevModal(rev: ReviewResponse) {
+  openEditRevModal(rev: ReviewResponse) {
     this.editRevData = {
       ...Utils.pluck(rev, 'id', 'emp_id', 'due_date'),
       reviewer_ids: rev.feedbacks.map(f => f.reviewer_id),
@@ -111,7 +113,7 @@ export class ReviewsComponent implements OnInit {
     }
   }
 
-  showDelRevModal(rev: ReviewResponse) {
+  openDelRevModal(rev: ReviewResponse) {
     this.delRevData = rev;
   }
 
