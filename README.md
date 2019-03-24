@@ -26,7 +26,8 @@ Using a free instance from ElephantSQL, so no need to install it locally. Here a
 **Max database size:**	20 MB<br>
 **API Key:** e331a27f-88bd-43d5-906e-078588883acb<br>
 
-You can use https://franchise.cloud/app/ for GUI.
+You can use https://franchise.cloud/app/ for GUI.<br>
+You may load the file Franchise-app-PostgreSQL.html to load the queries in the browser.
 
 ### TS-Node
 
