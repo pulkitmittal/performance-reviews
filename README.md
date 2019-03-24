@@ -34,6 +34,8 @@ You can use https://franchise.cloud/app/ for GUI.
 
 [Using express](https://expressjs.com/)
 
+API Collection: https://documenter.getpostman.com/view/7033733/S17rwU3q
+
 ### Angular
 
 [Using Angular with Typescript](https://angular.io/)
@@ -46,22 +48,24 @@ You can use https://franchise.cloud/app/ for GUI.
 
 ## Run on local
 
+Install [npm](https://www.npmjs.com/get-npm) or [yarn](https://yarnpkg.com/lang/en/docs/install/).<br>
+
 ### Server
 
-If yarn is not installed, follow the steps [here](https://yarnpkg.com/lang/en/docs/install/).<br>
 * Go to server `cd server`
-* Run `yarn`
-* Run `yarn run start`
+* If using yarn, run `yarn` & `yarn run start`
+* If using npm, run `npm install` & `npm run start`
 
 API server will start on http://localhost:3000/
 
 ### Frontend
 
 * Go to frontend `cd frontend`
-* Run `yarn`
-* Run `yarn run serve`
+* If using yarn, run `yarn` & `yarn run serve`
+* If using npm, run `npm install` & `npm run serve`
 
-Front website will start on http://localhost:4200/
+Front website will start on http://localhost:4200/<br>
+*Please use Google Chrome for testing. The site hasn't been tested on other browsers.*
 
 ### Credentials
 
@@ -81,13 +85,11 @@ Front website will start on http://localhost:4200/
 ## TODO
 
 ### Frontend
-* Create login view
-* Create common header and footer
-* Create admin employees view
-* Create admin reviews view
 * Create user reviews list view
 * Create user individual review view
 * Use cookie for saving auth token
+* Use state management
+* Use server side pagination instead of client side
 * Cross browser testing
 * Find a windows machine to test on IE :(
 
@@ -95,7 +97,8 @@ Front website will start on http://localhost:4200/
 * Use a better authentication mechanism - use passport or similar for saving auth token in database instead of application state
 * Encrypt passwords
 * Possibly use some ORM to replace SQL queries
-* Use typescript definitions for API spec
+* Add inner joins/left joins, but don't let it slow down the app
+* Use typescript definitions to create API spec
 * Translate database errors into human friendly API errors
 * Use database transactions for atomicity
 

@@ -1,5 +1,11 @@
-import { Employees as Employee, Feedback, PerformanceReviews as PerformanceReview, UserRole, Users as User } from '../shared/models';
-import { LoginRequest } from '../shared/request.model';
+import {
+  employees as Employee,
+  feedback as Feedback,
+  performance_reviews as PerformanceReview,
+  user_role as UserRole,
+  users as User,
+} from '../shared/models';
+import { AddReviewRequest, LoginRequest } from '../shared/request.model';
 import { LoginResponse, ReviewResponse, SafeUser } from '../shared/response.model';
 
 export {
@@ -11,5 +17,6 @@ export {
   Feedback,
   LoginResponse,
   ReviewResponse,
-  LoginRequest
+  LoginRequest,
+  AddReviewRequest
 }

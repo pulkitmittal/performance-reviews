@@ -1,0 +1,11 @@
+.tag.name {
+  font-size: 1rem;
+}
+.tag.status {
+  font-size: 1rem;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+td.date {
+  white-space: nowrap;
+}

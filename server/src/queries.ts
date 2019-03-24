@@ -48,12 +48,12 @@ const addEmployee = (emp: Omit<Employee, 'id'>): Promise<number> => {
     .then((results: Results<Employee>) => {
       return results.rows[0].id;
     })
-    .then(empId => {
+    .then(emp_id => {
       // add user for the newly created employee
       // TODO use proper username, generate a unique password, email a link to login and reset password
       const newUser: User = {
         id: null,
-        empId,
+        emp_id,
         username: name.toLowerCase().replace(/\s/g, '-'),
         password: 'passw0rd',
         role: 'employee'
@@ -61,11 +61,11 @@ const addEmployee = (emp: Omit<Employee, 'id'>): Promise<number> => {
       const userQuery = {
         text: `INSERT INTO users(emp_id, username, password, role)
           VALUES ($1, $2, $3, $4)`,
-        values: [newUser.empId, newUser.username, newUser.password, newUser.role]
+        values: [newUser.emp_id, newUser.username, newUser.password, newUser.role]
       };
 
       return pool.query(userQuery).then(() => {
-        return empId;
+        return emp_id;
       });
     });
 };
@@ -114,7 +114,7 @@ const getReview = (id: number): Promise<PerformanceReview> => {
 };
 
 const addReview = (emp: Omit<PerformanceReview, 'id'>): Promise<number> => {
-  const { empId, dueDate } = emp;
+  const { emp_id, due_date } = emp;
   const query = {
     text: `INSERT INTO performance_reviews(emp_id, due_date)
     VALUES
@@ -122,7 +122,7 @@ const addReview = (emp: Omit<PerformanceReview, 'id'>): Promise<number> => {
     ON CONFLICT ON CONSTRAINT performance_reviews_emp_id_due_date_key
       DO UPDATE SET emp_id = performance_reviews.emp_id
     RETURNING id`,
-    values: [empId, dueDate]
+    values: [emp_id, due_date]
   };
 
   return pool.query(query)
@@ -131,9 +131,9 @@ const addReview = (emp: Omit<PerformanceReview, 'id'>): Promise<number> => {
     });
 };
 
-const updateReview = (emp: Omit<PerformanceReview, 'empId'>): Promise<number> => {
+const updateReview = (emp: Omit<PerformanceReview, 'emp_id'>): Promise<number> => {
   console.log('updateReview:', emp);
-  const { id, dueDate } = emp;
+  const { id, due_date } = emp;
   const query = {
     text: `UPDATE performance_reviews
       SET
@@ -141,7 +141,7 @@ const updateReview = (emp: Omit<PerformanceReview, 'empId'>): Promise<number> =>
       WHERE
         id = $2
       `,
-    values: [dueDate, id]
+    values: [due_date, id]
   };
 
   return pool.query(query).then((result) => {
@@ -151,16 +151,16 @@ const updateReview = (emp: Omit<PerformanceReview, 'empId'>): Promise<number> =>
 
 /**
  * @param prId - Performance review ID
- * @param reviewerIds - Reviewers employee IDs
+ * @param reviewer_ids - Reviewers employee IDs
  */
-const setReviewers = (prId: number, reviewerIds: number[]) => {
-  // console.log('setReviewers:', prId, reviewerIds);
+const setReviewers = (prId: number, reviewer_ids: number[]) => {
+  // console.log('setReviewers:', prId, reviewer_ids);
   const query: pg.QueryConfig = {
     text: `INSERT INTO feedback(id, reviewer_id)
     VALUES ($1, unnest($2::int[]))
     ON CONFLICT ON CONSTRAINT feedback_id_reviewer_id_key
       DO NOTHING`,
-    values: [prId, reviewerIds]
+    values: [prId, reviewer_ids]
   };
 
   // TODO optimize the following query
@@ -170,7 +170,7 @@ const setReviewers = (prId: number, reviewerIds: number[]) => {
       f.id = $1
     AND
       f.reviewer_id NOT IN (SELECT * from unnest($2::int[]))`,
-    values: [prId, reviewerIds]
+    values: [prId, reviewer_ids]
   };
 
   return Promise.all([
@@ -195,10 +195,10 @@ const getAllFeedbacks = (): Promise<Feedback[]> => {
     });
 };
 
-const getFeedbacks = (empId: number): Promise<Feedback[]> => {
+const getFeedbacks = (emp_id: number): Promise<Feedback[]> => {
   return pool.query(`SELECT * FROM feedback
     WHERE
-    reviewer_id = $1`, [empId])
+    reviewer_id = $1`, [emp_id])
     .then((results: Results<Feedback>) => {
       return results.rows;
     });
@@ -213,9 +213,9 @@ const getFeedback = (prId: number): Promise<Feedback[]> => {
     });
 };
 
-const updateFeedback = (feedback: Omit<Feedback, 'assignedDate'>): Promise<number> => {
+const updateFeedback = (feedback: Omit<Feedback, 'assigned_date'>): Promise<number> => {
   console.log('updateFeedback:', feedback);
-  const { id, reviewerId, status, response } = feedback;
+  const { id, reviewer_id, status, response } = feedback;
   const query = {
     text: `UPDATE feedback
       SET
@@ -224,7 +224,7 @@ const updateFeedback = (feedback: Omit<Feedback, 'assignedDate'>): Promise<numbe
       WHERE
         id = $3 AND reviewer_id = $4
       `,
-    values: [status, response, id, reviewerId]
+    values: [status, response, id, reviewer_id]
   };
 
   return pool.query(query).then((result) => {

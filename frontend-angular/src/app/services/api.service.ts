@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Employee, LoginRequest, LoginResponse } from 'index';
+import { AddReviewRequest, Employee, LoginRequest, LoginResponse, ReviewResponse } from 'index';
 import { first } from 'rxjs/operators';
 
 import { AuthService } from './auth.service';
@@ -10,12 +10,15 @@ import { AuthService } from './auth.service';
 })
 export class ApiService {
 
+  // TODO move this to config file
   serverUrl = 'http://localhost:3000';
 
   constructor(
     private http: HttpClient,
     private auth: AuthService
-  ) { }
+  ) {
+    // TODO use an interceptor to add headers
+  }
 
   login(username: string, password: string): Promise<LoginResponse> {
     const requestBody: LoginRequest = {
@@ -68,6 +71,45 @@ export class ApiService {
 
   deleteEmployee(emp: Employee) {
     return this.http.delete(`${this.serverUrl}/employees/${emp.id}`, {
+      headers: {
+        'X-Requested-With': 'xmlhttprequest',
+        'token': this.auth.getAuthToken()
+      },
+      responseType: 'text'
+    }).pipe(first()).toPromise();
+  }
+
+  fetchReviews() {
+    return this.http.get<ReviewResponse[]>(`${this.serverUrl}/reviews`, {
+      headers: {
+        'X-Requested-With': 'xmlhttprequest',
+        'token': this.auth.getAuthToken()
+      }
+    }).pipe(first()).toPromise();
+  }
+
+  addReview(reqData: AddReviewRequest) {
+    return this.http.post(`${this.serverUrl}/reviews`, reqData, {
+      headers: {
+        'X-Requested-With': 'xmlhttprequest',
+        'token': this.auth.getAuthToken()
+      },
+      responseType: 'text'
+    }).pipe(first()).toPromise();
+  }
+
+  updateReview(id: number, reqData: AddReviewRequest) {
+    return this.http.put(`${this.serverUrl}/reviews/${id}`, reqData, {
+      headers: {
+        'X-Requested-With': 'xmlhttprequest',
+        'token': this.auth.getAuthToken()
+      },
+      responseType: 'text'
+    }).pipe(first()).toPromise();
+  }
+
+  deleteReview(id: number) {
+    return this.http.delete(`${this.serverUrl}/reviews/${id}`, {
       headers: {
         'X-Requested-With': 'xmlhttprequest',
         'token': this.auth.getAuthToken()

@@ -7,5 +7,5 @@
     "feedback"
   ],
   "output": "../shared/models.ts",
-  "camelCase": true
+  "camelCase": false
 }

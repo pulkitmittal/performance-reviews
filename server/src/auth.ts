@@ -11,14 +11,14 @@ const userTokens = new Map<string, User>();
 // Added only for testing APIs - TODO remove this
 const dummyUser: User = {
   id: 1,
-  empId: null,
+  emp_id: null,
   username: 'smith',
   password: 'passw0rd',
   role: 'admin'
 };
 const dummyEmpUser: User = {
   id: 2,
-  empId: 6,
+  emp_id: 6,
   username: 'karen',
   password: 'passw0rd',
   role: 'employee'

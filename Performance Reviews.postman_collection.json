@@ -52,6 +52,40 @@
 			"response": []
 		},
 		{
+			"name": "Logout",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "12345",
+						"type": "text"
+					},
+					{
+						"key": "X-Requested-With",
+						"type": "text",
+						"value": "xmlhttprequest"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/logout",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Get employees",
 			"request": {
 				"method": "GET",
@@ -112,7 +146,7 @@
 					"urlencoded": [
 						{
 							"key": "name",
-							"value": "Mark Vargas",
+							"value": "Charles Murphy",
 							"type": "text"
 						},
 						{
@@ -128,6 +162,11 @@
 						{
 							"key": "location",
 							"value": "Tokyo, Japan",
+							"type": "text"
+						},
+						{
+							"key": "id",
+							"value": "null",
 							"type": "text"
 						}
 					]
@@ -259,7 +298,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:3000/employees/7",
+					"raw": "http://localhost:3000/employees/8",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -267,7 +306,7 @@
 					"port": "3000",
 					"path": [
 						"employees",
-						"7"
+						"8"
 					]
 				}
 			},
@@ -368,18 +407,23 @@
 					"mode": "urlencoded",
 					"urlencoded": [
 						{
-							"key": "empId",
+							"key": "emp_id",
 							"value": "5",
 							"type": "text"
 						},
 						{
-							"key": "dueDate",
+							"key": "due_date",
 							"value": "2019-03-30",
 							"type": "text"
 						},
 						{
-							"key": "reviewerIds[]",
-							"value": "4",
+							"key": "reviewer_ids[]",
+							"value": "6",
+							"type": "text"
+						},
+						{
+							"key": "reviewer_ids[]",
+							"value": "9",
 							"type": "text"
 						}
 					]
@@ -424,22 +468,22 @@
 					"mode": "urlencoded",
 					"urlencoded": [
 						{
-							"key": "empId",
+							"key": "emp_id",
 							"value": "5",
 							"type": "text"
 						},
 						{
-							"key": "dueDate",
+							"key": "due_date",
 							"value": "2019-03-31",
 							"type": "text"
 						},
 						{
-							"key": "reviewerIds[]",
+							"key": "reviewer_ids[]",
 							"value": "4",
 							"type": "text"
 						},
 						{
-							"key": "reviewerIds[]",
+							"key": "reviewer_ids[]",
 							"value": "6",
 							"type": "text"
 						}
@@ -483,24 +527,8 @@
 					}
 				],
 				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "empId",
-							"value": "5",
-							"type": "text"
-						},
-						{
-							"key": "dueDate",
-							"value": "2019-03-30",
-							"type": "text"
-						},
-						{
-							"key": "reviewerIds[]",
-							"value": "4",
-							"type": "text"
-						}
-					]
+					"mode": "raw",
+					"raw": ""
 				},
 				"url": {
 					"raw": "http://localhost:3000/reviews/46",

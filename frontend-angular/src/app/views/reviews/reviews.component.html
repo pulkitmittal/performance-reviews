@@ -1,3 +1,136 @@
-<p>
-  reviews works!
-</p>
+<div class="content">
+  <h1 class="title">Reviews List
+    <button class="button is-link is-pulled-right" (click)="showAddRevModal()">
+      <i class="material-icons">add</i>Add Review
+    </button>
+  </h1>
+  <table class="table is-striped">
+    <thead>
+      <th>Employee ID</th>
+      <th>Employee Name</th>
+      <th>Due Date</th>
+      <th>Reviewers</th>
+      <th></th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let rev of reviews">
+        <td>{{rev.emp_id}}</td>
+        <td>{{rev.emp_id | employee:employees:'name'}}</td>
+        <td class="date">{{rev.due_date | date:'yyyy-MM-dd'}}</td>
+        <td>
+          <div class="field is-grouped is-grouped-multiline">
+            <div class="control" *ngFor="let feedback of rev.feedbacks">
+              <div class="tags has-addons">
+                <span class="tag is-dark name">{{feedback.reviewer_id | employee:employees:'name'}}</span>
+                <span class="tag is-info status">
+                  <i class="material-icons md-18"
+                    title="{{feedback | feedback:'status':'title'}}">
+                    {{feedback | feedback:'status':'icon'}}</i>
+                </span>
+              </div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div class="field is-grouped">
+            <p class="control">
+              <button class="button is-light" title="Edit" (click)="showEditRevModal(rev)">
+                <i class="material-icons md-18">edit</i>
+              </button>
+            </p>
+            <p class="control">
+              <button class="button is-danger" title="Delete" (click)="showDelRevModal(rev)">
+                <i class="material-icons md-18">delete</i>
+              </button>
+            </p>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<nav class="pagination" role="navigation" aria-label="pagination" *ngIf="paging">
+  Pages:
+  <ul class="pagination-list">
+    <li *ngFor="let num of paging.numbers">
+      <a class="pagination-link" [class.is-current]="paging.current === num" (click)="setPage(num)">{{num}}</a>
+    </li>
+  </ul>
+</nav>
+
+<div class="modal is-active" *ngIf="editRevData">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">{{ editRevData?.mode === 'edit' ? 'Edit' : 'Add' }} Review</p>
+      <button class="delete" aria-label="close" (click)="closeRevModal()"></button>
+    </header>
+    <section class="modal-card-body">
+
+      <div class="notification is-danger" *ngIf="errorMsg">
+        <button class="delete" (click)="errorMsg=''"></button> Error: {{errorMsg}}
+      </div>
+
+      <div class="field">
+        <label class="label">Employee</label>
+        <div class="control">
+          <div class="select">
+            <select [value]="editRevData?.emp_id"
+              #empId (change)="updateRevData('emp_id', empId.value)"
+              [disabled]="editRevData?.mode === 'edit'">
+              <option *ngFor="let emp of employees" [value]="emp.id">{{emp.name}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Due Date</label>
+        <div class="control">
+          <input class="input" type="date" placeholder="YYYY/MM/DD"
+            value="{{editRevData?.due_date | date:'yyyy-MM-dd'}}"
+            #dueDate (change)="updateRevData('due_date', dueDate.value)">
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Reviewers</label>
+        <div class="control">
+          <div class="select is-multiple">
+            <select multiple #reviewers
+              (change)="updateRevData('reviewer_ids', reviewers)">
+              <option *ngFor="let emp of employees" [value]="emp.id"
+                [disabled]="editRevData?.emp_id === emp.id"
+                [selected]="editRevData?.reviewer_ids?.includes(emp.id)">{{emp.name}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-link" (click)="saveRev()" [class.is-loading]="saving">Save</button>
+      <button class="button" (click)="closeRevModal()">Cancel</button>
+    </footer>
+  </div>
+</div>
+
+<div class="modal is-active" *ngIf="delRevData">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Delete Review</p>
+      <button class="delete" aria-label="close" (click)="closeRevModal()"></button>
+    </header>
+    <section class="modal-card-body">
+      <div class="notification is-danger" *ngIf="errorMsg">
+        <button class="delete" (click)="errorMsg=''"></button> Error: {{errorMsg}}
+      </div>
+      <p>Deleting a review will also remove the responses from the reviewers. This action is irreversible.</p>
+      <p>Are you sure you want to delete the review?</p>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-danger" (click)="delRev()" [class.is-loading]="saving">Delete</button>
+      <button class="button" (click)="closeRevModal()">Cancel</button>
+    </footer>
+  </div>
+</div>

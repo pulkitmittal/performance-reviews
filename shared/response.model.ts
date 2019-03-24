@@ -1,7 +1,7 @@
-import { Feedback, PerformanceReviews, Users } from './models';
+import { feedback, performance_reviews, users } from './models';
 import { Omit } from './utils';
 
-export type SafeUser = Omit<Users, 'empId' | 'password'>;
+export type SafeUser = Omit<users, 'emp_id' | 'password'>;
 
 export interface LoginResponse {
   login: boolean;
@@ -10,6 +10,6 @@ export interface LoginResponse {
   token?: string;
 }
 
-export type ReviewResponse = PerformanceReviews & {
-  feedbacks: Feedback[]
+export type ReviewResponse = performance_reviews & {
+  feedbacks: feedback[]
 }

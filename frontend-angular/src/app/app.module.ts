@@ -9,13 +9,13 @@ import { CustomMaterialModule } from './components/custom-material.module';
 import { EmployeesComponent } from './views/employees/employees.component';
 import { LoginComponent } from './views/login/login.component';
 import { ReviewsComponent } from './views/reviews/reviews.component';
+import { EmployeePipe } from './pipes/employee.pipe';
+import { FeedbackPipe } from './pipes/feedback.pipe';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'employees', component: EmployeesComponent },
-  { path: 'employees/:id', component: EmployeesComponent },
   { path: 'reviews', component: ReviewsComponent },
-  { path: 'reviews/:id', component: ReviewsComponent },
   {
     path: '**',
     redirectTo: '/login',
@@ -28,7 +28,9 @@ const appRoutes: Routes = [
     AppComponent,
     LoginComponent,
     EmployeesComponent,
-    ReviewsComponent
+    ReviewsComponent,
+    EmployeePipe,
+    FeedbackPipe
   ],
   imports: [
     BrowserModule,

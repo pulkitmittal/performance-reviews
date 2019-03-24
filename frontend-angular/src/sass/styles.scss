@@ -9,7 +9,6 @@ $navbar-breakpoint: $tablet !default;
 @import "../../node_modules/bulma/bulma.sass";
 
 .material-icons {
-  margin-right: 4px;
   &.md-18 {
     font-size: 18px;
   }
@@ -22,10 +21,17 @@ $navbar-breakpoint: $tablet !default;
   &.md-48 {
     font-size: 48px;
   }
+  + span {
+    margin-left: 4px;
+  }
 }
 .navbar.is-link {
   .navbar-item,
   .material-icons {
     color: $white;
   }
+}
+.select select[multiple] option[disabled] {
+  background-color: $white-ter;
+  color: $grey;
 }

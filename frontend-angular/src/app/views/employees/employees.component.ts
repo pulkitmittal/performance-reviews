@@ -10,6 +10,7 @@ import { ApiService } from 'src/app/services/api.service';
 export class EmployeesComponent implements OnInit {
 
   employees: Employee[] = [];
+
   editEmpData: Employee & {
     mode: 'edit' | 'add'
   } = null;
@@ -81,31 +82,32 @@ export class EmployeesComponent implements OnInit {
 
   saveEmp() {
     console.log('Saving employee:', this.editEmpData);
-    let request: Promise<any>;
-    if (this.editEmpData.mode === 'add') {
-      // TODO make add ajax call
-      request = this.api.addEmployee(this.editEmpData);
-    } else if (this.editEmpData.mode === 'edit') {
-      // TODO make edit ajax call
-      request = this.api.editEmployee(this.editEmpData);
-    }
-    if (request) {
-      this.saving = true;
-      request.then(() => {
-        this.editEmpData = null;
-        this.saving = false;
-        this.loadEmployees();
-      }).catch(err => {
-        console.log('Error:', err);
-        this.errorMsg = err && err.error || '';
-        this.saving = false;
-      });
+    if (this.editEmpData) {
+      let request: Promise<any>;
+      if (this.editEmpData.mode === 'add') {
+        request = this.api.addEmployee(this.editEmpData);
+      } else if (this.editEmpData.mode === 'edit') {
+        request = this.api.editEmployee(this.editEmpData);
+      }
+      if (request) {
+        this.saving = true;
+        request.then(() => {
+          this.editEmpData = null;
+          this.saving = false;
+          this.loadEmployees();
+        }).catch(err => {
+          console.log('Error:', err);
+          this.errorMsg = err && err.error || '';
+          this.saving = false;
+        });
+      }
     }
   }
 
   closeEmpModal() {
     this.editEmpData = null;
     this.delEmpData = null;
+    this.errorMsg = '';
   }
 
   showDelEmpModal(emp: Employee) {
@@ -114,17 +116,19 @@ export class EmployeesComponent implements OnInit {
 
   delEmp() {
     console.log('Deleting employee:', this.delEmpData);
-    this.saving = true;
-    this.api.deleteEmployee(this.delEmpData)
-      .then(() => {
-        this.delEmpData = null;
-        this.saving = false;
-        this.loadEmployees();
-      }).catch(err => {
-        console.log('Error:', err);
-        this.errorMsg = err && err.error || '';
-        this.saving = false;
-      });
+    if (this.delEmpData) {
+      this.saving = true;
+      this.api.deleteEmployee(this.delEmpData)
+        .then(() => {
+          this.delEmpData = null;
+          this.saving = false;
+          this.loadEmployees();
+        }).catch(err => {
+          console.log('Error:', err);
+          this.errorMsg = err && err.error || '';
+          this.saving = false;
+        });
+    }
   }
 
   setPage(page: number) {

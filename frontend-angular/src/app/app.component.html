@@ -1,7 +1,7 @@
 <nav class="navbar is-fixed-top is-link" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
     <a class="navbar-item" routerLink="/">
-      <i class="material-icons md-36">supervisor_account</i> Performance Reviews
+      <i class="material-icons md-36">supervisor_account</i><span>Performance Reviews</span>
     </a>
 
     <a *ngIf="user" role="button" class="navbar-burger burger" [class.is-active]="menuOpen"
@@ -21,7 +21,7 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="navbar-item">
-          <i class="material-icons">account_circle</i> {{ user.name }}
+          <i class="material-icons">account_circle</i><span>{{ user.name }}</span>
         </div>
         <div class="navbar-item">
           <a class="button is-white" href="#" (click)="logout()">Logout</a>
