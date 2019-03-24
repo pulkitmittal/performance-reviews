@@ -35,7 +35,6 @@ export class AppComponent implements OnInit {
   }
 
   logout() {
-    // TODO make logout ajax call
     this.api.logout().then(() => {
       this.auth.logout();
       this.router.navigate(['login'], {

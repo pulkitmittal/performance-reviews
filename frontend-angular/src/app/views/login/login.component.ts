@@ -51,7 +51,11 @@ export class LoginComponent implements OnInit {
         if (res.login) {
           this.auth.setLoggedInUser(res.user);
           this.auth.setAuthToken(res.token);
-          this.router.navigate(['employees']);
+          if (res.user.role === 'admin') {
+            this.router.navigate(['employees']);
+          } else {
+            this.router.navigate(['feedback']);
+          }
         }
       })
       .catch(err => {

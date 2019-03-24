@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LoginResponse, SafeUser } from 'index';
+import { SafeUser } from 'index';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
@@ -8,19 +8,22 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class AuthService {
 
   // TODO remove this
-  dummyAdminUser: LoginResponse = {
-    login: true,
-    user: { id: 1, username: 'smith', role: 'admin' },
-    token: '12345'
-  };
-  dummyEmpUser: LoginResponse = {
-    login: true,
-    user: { id: 2, username: 'karen', role: 'employee' },
-    token: '54321'
-  };
+  // dummyAdminUser: LoginResponse = {
+  //   login: true,
+  //   user: { id: 1, username: 'smith', role: 'admin' },
+  //   token: '12345'
+  // };
+  // dummyEmpUser: LoginResponse = {
+  //   login: true,
+  //   user: { id: 2, username: 'karen', role: 'employee' },
+  //   token: '54321'
+  // };
 
-  loggedInUser$ = new BehaviorSubject<SafeUser>(this.dummyAdminUser.user);
-  authToken$ = new BehaviorSubject<string>(this.dummyAdminUser.token);
+  // loggedInUser$ = new BehaviorSubject<SafeUser>(this.dummyAdminUser.user);
+  // authToken$ = new BehaviorSubject<string>(this.dummyAdminUser.token);
+
+  loggedInUser$ = new BehaviorSubject<SafeUser>(null);
+  authToken$ = new BehaviorSubject<string>(null);
 
   constructor() { }
 

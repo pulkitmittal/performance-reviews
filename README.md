@@ -86,6 +86,7 @@ Front website will start on http://localhost:4200/<br>
 
 ### Frontend
 * Use cookie for saving auth token
+* Add navigation guards to check for admin and user privileges during navigation
 * Use state management
 * Use server side pagination instead of client side, or maybe use lazy-loading instead
 * Cross browser testing

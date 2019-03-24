@@ -5,7 +5,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { CustomMaterialModule } from './components/custom-material.module';
 import { EmployeePipe } from './pipes/employee.pipe';
 import { FeedbackPipe } from './pipes/feedback.pipe';
 import { EmployeesComponent } from './views/employees/employees.component';
@@ -14,14 +13,13 @@ import { LoginComponent } from './views/login/login.component';
 import { ReviewsComponent } from './views/reviews/reviews.component';
 
 const appRoutes: Routes = [
-  { path: 'login', component: LoginComponent },
+  { path: 'login', pathMatch: 'full', component: LoginComponent },
   { path: 'employees', component: EmployeesComponent },
   { path: 'reviews', component: ReviewsComponent },
   { path: 'feedback', component: FeedbacksComponent },
   {
     path: '**',
-    redirectTo: '/login',
-    pathMatch: 'full'
+    redirectTo: '/login'
   }
 ];
 
@@ -37,7 +35,6 @@ const appRoutes: Routes = [
   ],
   imports: [
     BrowserModule,
-    CustomMaterialModule,
     BrowserAnimationsModule,
     RouterModule.forRoot(appRoutes, {
       // useHash: true,
